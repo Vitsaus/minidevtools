@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {Switch, Route, useHistory, Link} from 'react-router-dom';
 import { JsonPrettifyPage } from '../../pages/JsonPrettifyPage';
 import { MainPage } from '../../pages/MainPage';
@@ -7,6 +7,7 @@ import { JwtDecodePage } from '../../pages/JwtDecodePage';
 import { GenerateUuidPage } from '../../pages/GenerateUuidPage';
 import { DateTimePage } from '../../pages/DateTimePage';
 import { XmlPrettifyPage } from '../../pages/XmlPrettifyPage';
+import mousetrap from 'mousetrap';
 
 const GlobalStyle = createGlobalStyle`
     html {
@@ -33,10 +34,14 @@ const GlobalStyle = createGlobalStyle`
         padding: 6px;
         border-radius: 4px;
         width: 100%;
+        text-align: left;
     }
     input {
         height: 28px;
         margin: 0 0 12px 0;
+    }
+    input[type=button], input[type=submit] {
+        cursor: pointer;
     }
     textarea {
         height: 240px;
@@ -72,10 +77,38 @@ const Tools = styled.div`
 `;
 
 const Page = styled.div`
-    margin: 16px 8px 16px 8px;
+    margin: 0;
+    padding: 0;
 `;
 
 export function App() {
+
+    const history = useHistory();
+
+    useEffect(() => {
+        mousetrap.bind('command+1', () => {
+            history.push('/json-prettify');
+        });
+        mousetrap.bind('command+2', () => {
+            history.push('/jwt-decode');
+        });
+        mousetrap.bind('command+3', () => {
+            history.push('/generate-uuid');
+        });
+        mousetrap.bind('command+4', () => {
+            history.push('/datetime');
+        });
+        mousetrap.bind('command+5', () => {
+            history.push('/xml-prettify');
+        });
+        mousetrap.bind('command+q', () => {
+            
+        });
+        return () => {
+            mousetrap.reset();
+        }
+    }, []);
+
     return (
         <Root>
             <GlobalStyle />

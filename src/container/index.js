@@ -1,17 +1,31 @@
-const { app, BrowserWindow, } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
 const path = require('path');
 
 function createWindow () {
   const win = new BrowserWindow({
     width: 800,
-    height: 600,
+    height: 660,
+    frame: false,
     openDevTools: true,
     webPreferences: {
       nodeIntegration: true,
     }
   })
 
-  win.loadURL(`file:///${__dirname}/index.html`);
+  ipcMain.on('message', (event, args) => {
+    console.log('args', args);
+  });
+
+  ipcMain.on('close', (event, args) => {
+    win.close();
+  });
+  
+  win.loadURL(`file:///${__dirname}/index.html`).then(() => {
+    const shortcut = globalShortcut.register('Command+0', () => {
+      if (!win) return;
+      win.show();
+    });
+  });
 
 }
 
@@ -28,3 +42,4 @@ app.on('activate', () => {
     createWindow()
   }
 })
+

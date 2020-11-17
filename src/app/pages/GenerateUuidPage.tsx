@@ -1,22 +1,26 @@
 import React, { useState } from 'react';
 import {v4} from 'uuid';
+import { Content } from '../components/Config';
+import { Utility } from '../components/Utility';
 
 export function GenerateUuidPage() {
 
     const [value, setValue] = useState<string>("");
     
     return (
-        <div>
-            <div>
-                <input type="button" value={"Generate UUID"} onClick={() => {
-                    const uuid = v4();
-                    setValue(uuid);
-                }} />
-            </div>
-            <div>
-                <input type="text" value={value} onChange={() => {}} />
-            </div>
-        </div>
+        <Utility title="Generate UUID">
+            <Content>            
+                <div>
+                    <input type="button" value={"Generate UUID"} onClick={() => {
+                        const uuid = v4();
+                        setValue(uuid);
+                    }} />
+                </div>
+                <div>
+                    <input type="text" value={value} onChange={() => {}} />
+                </div>
+            </Content>
+        </Utility>
     )
 
 }
