@@ -74,6 +74,9 @@ const Tools = styled.div`
     flex-direction: row;
     color: #fff;
     background-color: #1A1A1A;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;  
+    cursor: pointer;
 `;
 
 const Page = styled.div`

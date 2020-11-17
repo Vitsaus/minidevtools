@@ -9,23 +9,14 @@ require('dotenv').config();
 module.exports = {
   entry: './src/app/index.tsx',
   output: {
-    path: path.join(__dirname, '/dist'),
+    path: path.join(__dirname, '/dist-app'),
     filename: 'main.js',
     publicPath: '/'
   },
   resolve: {
     extensions: ['.tsx', '.tsx', '.js', 'css', 'scss']
   },
-  target: 'web',
-  devServer: {
-    clientLogLevel: 'warning',
-    open: true,
-    historyApiFallback: true,
-    stats: 'errors-only',
-    contentBase: path.resolve(__dirname, 'src', 'app'),
-    watchContentBase: true,
-    hot: true,
-  },
+  target: 'electron-renderer',
   mode: 'development',
   module: {
     rules: [
