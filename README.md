@@ -14,6 +14,6 @@ npm run package:mac
 run dev version:
 ```
 npm install
-npm run start:app
-npm run start:electron
+npm run watch
+npm run electron
 ```

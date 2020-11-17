@@ -1,6 +1,6 @@
 {
   "name": "@vitsaus/minitools",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "small electron app with usefull little minitools",
   "productName": "@vitsaus/mini-tools",
   "main": "dist/container.js",
@@ -15,7 +15,7 @@
     "build:app:prod": "webpack --color --mode production --config webpack.config.app.prod.js",
     "build:electron": "webpack --color --mode development --config webpack.config.electron.js",
     "build:electron:prod": "webpack --color --mode production --config webpack.config.electron.prod.js",
-    "package:mac": "electron-packager . minitools --overwrite --asar --platform=darwin --arch=x64 --prune=true --out=release-builds"
+    "package:mac": "electron-packager . minitools --overwrite --asar --platform=darwin --arch=x64 --prune=true --out=release-builds --app-bundle-id=com.vitsaus.minidevtools"
   },
   "keywords": [],
   "author": "",
@@ -42,6 +42,7 @@
     "@types/react-router-dom": "^5.1.5",
     "@types/styled-components": "5.1.1",
     "@types/uuid": "8.3.0",
+    "@types/date-fns": "^2.6.0",
     "babel-loader": "^8.1.0",
     "classnames": "^2.2.6",
     "css-loader": "^3.5.3",
@@ -77,7 +78,6 @@
     "webpack-dev-server": "^3.11.0"
   },
   "dependencies": {
-    "@types/date-fns": "^2.6.0",
     "countries-and-timezones": "^2.3.1",
     "date-fns": "^2.16.1",
     "date-fns-timezone": "^0.1.4",
