@@ -2,6 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Utility } from '../components/Utility';
 import { Content, Config, Option, OptionTitle, OptionValue } from '../components/Config';
 import mousetrap from 'mousetrap';
+import { ipcRenderer } from 'electron';
+import { useEditor } from '../hooks/editor';
+import { usePasteFromClipboard } from '../hooks/pasteFromClipboard';
+import { useCopyToClipboard } from '../hooks/copyToClipboard';
 
 function getPrettified(value: string, spacing: number): string {
     try {
@@ -14,23 +18,31 @@ function getPrettified(value: string, spacing: number): string {
 
 export function JsonPrettifyPage() {
 
+
+
     const [value, setValue] = useState<string>('');
     const [spacing, setSpacing] = useState<number>(4);
     const fieldRef = useRef<HTMLTextAreaElement | null>(null);
+    const resultRef = useRef<HTMLTextAreaElement>(null);
 
-    useEffect(() => {    
-        mousetrap.bind('command+e', (e) => {
-            e.preventDefault();
+    useCopyToClipboard({
+        ref: resultRef
+    })
+
+    useEditor({
+        onFocus: () => {
             fieldRef.current?.focus();
-        });
-        mousetrap.bind('command+s', (e) => {
-            e.preventDefault();
+        },
+        onBlur: () => {
             fieldRef.current?.blur();
-        });
-        return () => {
-            mousetrap.unbind('command+e');
+        },
+    });
+
+    usePasteFromClipboard({
+        onPaste: (clipboardValue) => {
+            setValue(clipboardValue);
         }
-    }, [])
+    });
 
     return (
         <Utility title="Json Prettify">
@@ -48,7 +60,7 @@ export function JsonPrettifyPage() {
                     }} />
                 </div>
                 <div>
-                    <textarea value={getPrettified(value, spacing)} onChange={() => {}} />
+                    <textarea ref={resultRef} value={getPrettified(value, spacing)} onChange={() => {}} />
                 </div>
             </Content>
         </Utility>

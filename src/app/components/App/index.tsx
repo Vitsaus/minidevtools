@@ -8,81 +8,7 @@ import { GenerateUuidPage } from '../../pages/GenerateUuidPage';
 import { DateTimePage } from '../../pages/DateTimePage';
 import { XmlPrettifyPage } from '../../pages/XmlPrettifyPage';
 import mousetrap from 'mousetrap';
-
-const GlobalStyle = createGlobalStyle`
-    html {
-        box-sizing: border-box;
-    }
-    *, *:before, *:after {
-        box-sizing: inherit;
-    }   
-    html, body {
-        margin: 0;
-        padding: 0;
-    } 
-    body {
-        background-color: #f8f8f8;
-    }
-    input:focus, textarea:focus, select:focus{
-        outline: none;
-    } 
-    textarea, input, select {
-        border: 1px solid #444;
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 12px;
-        padding: 6px;
-        border-radius: 4px;
-        width: 100%;
-        text-align: left;
-    }
-    input {
-        height: 28px;
-        margin: 0 0 12px 0;
-    }
-    input[type=button], input[type=submit] {
-        cursor: pointer;
-    }
-    textarea {
-        height: 240px;
-        margin: 0 0 12px 0;
-    }
-    div {
-        font-family: Roboto;
-        font-size: 12px;
-        letter-spacing: 1.5;
-    }
-`;
-
-const StyledLink = styled(Link)`
-    color: #fff;
-    text-decoration: none;
-    margin: 8px;
-    &:hover {
-        color: #fff;
-        text-decoration: underline;
-    }
-`;
-
-const Root = styled.div`
-    display: flex;
-    flex-direction: column;
-`;
-
-const Tools = styled.div`
-    display: flex;
-    flex-direction: row;
-    color: #fff;
-    background-color: #1A1A1A;
-    -webkit-user-select: none;
-    -webkit-app-region: drag;  
-    cursor: pointer;
-`;
-
-const Page = styled.div`
-    margin: 0;
-    padding: 0;
-`;
+import { GlobalStyle, Root, StyledLink, Tools, Page } from './styles';
 
 export function App() {
 
@@ -103,9 +29,6 @@ export function App() {
         });
         mousetrap.bind('command+5', () => {
             history.push('/xml-prettify');
-        });
-        mousetrap.bind('command+q', () => {
-            
         });
         return () => {
             mousetrap.reset();

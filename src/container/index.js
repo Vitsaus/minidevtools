@@ -1,4 +1,4 @@
-const { app, BrowserWindow, globalShortcut, ipcMain } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, clipboard } = require('electron');
 const path = require('path');
 const {
   xml2xsd,
@@ -35,12 +35,10 @@ function createWindow () {
   });
   
   win.loadURL(`file:///${__dirname}/index.html`).then(() => {
+    win.openDevTools();
     globalShortcut.register('Command+0', () => {
       if (!win) return;
       win.show();
-    });
-    globalShortcut.register("CommandOrControl+R", () => {
-      console.log("CommandOrControl+R is pressed: Shortcut Disabled");
     });
   });
 
@@ -58,5 +56,27 @@ app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
   }
+});
+
+app.on('browser-window-focus', (event, win) => {
+  globalShortcut.register("Command+E", () => {
+    console.log('edit');
+    win.webContents.send('edit');
+  });
+  globalShortcut.register("Command+C", () => {
+    console.log('copy');
+    win.webContents.send('copy');
+  });
+  globalShortcut.register("Command+P", () => {
+    const value = clipboard.readText("clipboard")
+    console.log('paste', value);
+    win.webContents.send('paste', value);
+  });
+});
+
+app.on('browser-window-blur', (event, win) => {
+  globalShortcut.unregister('Command+E');
+  globalShortcut.unregister('Command+C');
+  globalShortcut.unregister('Command+P');
 });
 
