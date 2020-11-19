@@ -1,6 +1,6 @@
 {
   "name": "@vitsaus/minitools",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "small electron app with usefull little minitools",
   "productName": "@vitsaus/mini-tools",
   "main": "dist/container.js",

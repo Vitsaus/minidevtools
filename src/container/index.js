@@ -35,7 +35,7 @@ function createWindow () {
   });
   
   win.loadURL(`file:///${__dirname}/index.html`).then(() => {
-    win.openDevTools();
+    //win.openDevTools();
     globalShortcut.register('Command+0', () => {
       if (!win) return;
       win.show();
