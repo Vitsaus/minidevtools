@@ -45,23 +45,11 @@ function createWindow () {
 
   win.loadURL(`file:///${__dirname}/index.html`).then(() => {
     //win.openDevTools();
-    globalShortcut.register('Command+0', () => {
-      if (!win) return;
-      win.show();
-    });
   });
 
 }
 
 app.whenReady().then(createWindow)
-
-/*
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-});
-*/
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
@@ -72,6 +60,15 @@ app.on('activate', () => {
 });
 
 app.on('browser-window-focus', (event, win) => {
+
+  globalShortcut.register('Command+0', () => {
+    if (!win) {
+      createWindow();
+    } else {
+      win.show();
+    }
+  });
+
   globalShortcut.register("Command+R", (e) => {
     e.preventDefault();
   });
