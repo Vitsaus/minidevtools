@@ -39,7 +39,6 @@ export function App() {
         <Root>
             <GlobalStyle />
             <Tools>
-                <StyledLink to="/">Main</StyledLink>
                 <StyledLink to="/json-prettify">JSON prettify</StyledLink>
                 <StyledLink to="/jwt-decode">JWT Decode</StyledLink>
                 <StyledLink to="/generate-uuid">Generate UUID</StyledLink>
