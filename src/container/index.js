@@ -1,4 +1,5 @@
-const { app, BrowserWindow, globalShortcut, ipcMain, clipboard } = require('electron');
+const { constants } = require('crypto');
+const { app, BrowserWindow, globalShortcut, ipcMain, clipboard, Menu } = require('electron');
 const path = require('path');
 const {
   xml2xsd,
@@ -13,7 +14,7 @@ let win;
 
 function createWindow () {
 
-  app.dock.hide();
+  //app.dock.hide();
 
   win = new BrowserWindow({
     width: 800,
@@ -51,6 +52,16 @@ function createWindow () {
 
 app.whenReady().then(createWindow)
 
+app.on('ready', () => {
+
+  const template = [];
+
+  const appMenu = Menu.buildFromTemplate(template);
+
+  Menu.setApplicationMenu(appMenu);
+
+});
+
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     createWindow()
@@ -60,17 +71,12 @@ app.on('activate', () => {
 });
 
 app.on('browser-window-focus', (event, win) => {
-
   globalShortcut.register('Command+0', () => {
     if (!win) {
       createWindow();
     } else {
       win.show();
     }
-  });
-
-  globalShortcut.register("Command+R", (e) => {
-    e.preventDefault();
   });
   globalShortcut.register("Command+E", () => {
     console.log('edit');
