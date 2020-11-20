@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import React, { useEffect, RefObject } from 'react';
+import { useEffect, RefObject } from 'react';
 
 type UsePasteFromClipboardProps = {
     onPaste: (valueFromClipboard: string) => void;

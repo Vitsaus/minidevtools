@@ -1,5 +1,5 @@
 import { format, fromUnixTime, addSeconds, addMinutes, subMinutes } from 'date-fns';
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import * as cat from 'countries-and-timezones';
 import styled from 'styled-components';
 import { Utility } from '../components/Utility';

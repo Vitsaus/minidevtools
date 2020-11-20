@@ -1,5 +1,5 @@
 import { ipcRenderer } from 'electron';
-import React, {RefObject, useEffect} from 'react';
+import { RefObject, useEffect } from 'react';
 
 const copyToClipboard = (content: string) => {
     const el = document.createElement('textarea');

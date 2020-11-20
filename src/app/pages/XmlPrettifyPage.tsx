@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import format from 'xml-formatter';
 import { Utility } from '../components/Utility';
 import { Content, Config, Option, OptionTitle, OptionValue } from '../components/Config';

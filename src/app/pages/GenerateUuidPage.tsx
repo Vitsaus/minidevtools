@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import {v4} from 'uuid';
 import { Content } from '../components/Config';
 import { Utility } from '../components/Utility';

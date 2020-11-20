@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import {Switch, Route, useHistory, Link} from 'react-router-dom';
 import { JsonPrettifyPage } from '../../pages/JsonPrettifyPage';
 import { MainPage } from '../../pages/MainPage';

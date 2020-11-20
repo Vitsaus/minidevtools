@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import jwt from 'jwt-decode';
 import { Utility } from '../components/Utility';
 import { Content } from '../components/Config';

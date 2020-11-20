@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Utility } from '../components/Utility';
 import { Content, Config, Option, OptionTitle, OptionValue } from '../components/Config';
 import mousetrap from 'mousetrap';
