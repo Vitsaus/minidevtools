@@ -1,5 +1,4 @@
 {
-    "editor.lineNumbers": "on",
     "extensions.ignoreRecommendations": true,
     "typescript.tsdk": "./node_modules/typescript/lib",
 }

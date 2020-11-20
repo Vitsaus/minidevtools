@@ -9,6 +9,7 @@ const {
   detectXmlSchema,
   jsonSchema2xsd
 } = require('xsdlibrary');
+const vm = require('vm');
 
 let win;
 
@@ -40,6 +41,17 @@ function createWindow () {
     }
   });
 
+  ipcMain.handle('jsEval', async (event, code) => {
+    try {
+      const result = vm.runInNewContext(code);
+      console.log('got code from eval', code);      
+      return result;
+    } catch(e) {
+      console.log('eval failed', e)
+      return e;
+    }
+  });
+
   ipcMain.on('close', (event, args) => {
     win.close();
   });
@@ -50,12 +62,68 @@ function createWindow () {
 
 }
 
+function createMenu() {
+
+  const application = {
+    label: 'Application',
+    submenu: [
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: () => {
+          app.quit();
+        },
+      },
+    ],
+  };
+
+  const edit = {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Undo',
+        accelerator: 'CmdOrCtrl+Z',
+        role: 'undo',
+      },
+      {
+        label: 'Redo',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        role: 'redo',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        role: 'cut',
+      },
+      {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        role: 'copy',
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        role: 'paste',
+      },
+      {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectAll',
+      },
+    ],
+  };
+
+  return [application, edit];
+}
+
 app.whenReady().then(createWindow)
 
 app.on('ready', () => {
 
-  const template = [];
-
+  const template = createMenu();
   const appMenu = Menu.buildFromTemplate(template);
 
   Menu.setApplicationMenu(appMenu);

@@ -39,6 +39,7 @@ module.exports = {
           },
         ],
       },
+      { test: /\.m?js/, type: "javascript/auto" },
       {
         test: /\.svg$/,
         use: ['@svgr/webpack', 'url-loader']

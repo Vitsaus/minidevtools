@@ -9,6 +9,8 @@ import { DateTimePage } from '../../pages/DateTimePage';
 import { XmlPrettifyPage } from '../../pages/XmlPrettifyPage';
 import mousetrap from 'mousetrap';
 import { GlobalStyle, Root, StyledLink, Tools, Page } from './styles';
+import { Base64Page } from '../../pages/Base64Page';
+import { JSEvalPage } from '../../pages/JsEvalPage';
 
 export function App() {
 
@@ -30,6 +32,12 @@ export function App() {
         mousetrap.bind('command+5', () => {
             history.push('/xml-prettify');
         });
+        mousetrap.bind('command+6', () => {
+            history.push('/base64');
+        });
+        mousetrap.bind('command+7', () => {
+            history.push('/js-eval');
+        });
         return () => {
             mousetrap.reset();
         }
@@ -44,6 +52,8 @@ export function App() {
                 <StyledLink to="/generate-uuid">Generate UUID</StyledLink>
                 <StyledLink to="/datetime">DateTime</StyledLink>
                 <StyledLink to="/xml-prettify">XML prettify</StyledLink>
+                <StyledLink to="/base64">Base64</StyledLink>
+                <StyledLink to="/js-eval">JS Eval</StyledLink>
             </Tools>
             <Page>
                 <Switch>
@@ -53,6 +63,8 @@ export function App() {
                     <Route path="/generate-uuid" exact component={GenerateUuidPage} />
                     <Route path="/datetime" exact component={DateTimePage} />
                     <Route path="/xml-prettify" exact component={XmlPrettifyPage} />
+                    <Route path="/base64" exact component={Base64Page} />
+                    <Route path="/js-eval" exact component={JSEvalPage} />
                 </Switch>
             </Page>
         </Root>
