@@ -57,10 +57,10 @@ export function Base64Page() {
                     }} />
                 </div>
                 <div>
-                    <textarea ref={resultRef} value={getEncoded(value)} onChange={() => {}} />
+                    <textarea ref={resultRef} placeholder="encoded" value={getEncoded(value)} onChange={() => {}} />
                 </div>
                 <div>
-                    <textarea ref={resultRef} value={getDecoded(value)} onChange={() => {}} />
+                    <textarea ref={resultRef} placeholder="decoded" value={getDecoded(value)} onChange={() => {}} />
                 </div>
             </Content>
         </Utility>

@@ -43,12 +43,12 @@ export function JSEvalPage() {
         <Utility title="JS Eval">
             <Content>
                 <div>
-                <textarea ref={fieldRef} value={value} onChange={(e) => {
+                <textarea ref={fieldRef} placeholder="write javascript here" value={value} onChange={(e) => {
                     setValue(e.target.value);
                 }} />
                 </div>
                 <div>
-                    <textarea ref={resultRef} value={result} onChange={() => {}} />
+                    <textarea ref={resultRef} placeholder="result" value={result} onChange={() => {}} />
                 </div>
             </Content>
         </Utility>
