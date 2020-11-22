@@ -11,7 +11,7 @@ const {
 } = require('xsdlibrary');
 const vm = require('vm');
 
-let win;
+let win: Electron.BrowserWindow;
 
 function createWindow () {
 
@@ -21,7 +21,6 @@ function createWindow () {
     width: 800,
     height: 660,
     frame: false,
-    openDevTools: true,
     resizable: true,
     movable: true,
     autoHideMenuBar: true,
@@ -64,70 +63,58 @@ function createWindow () {
 
 function createMenu() {
 
-  const application = {
-    label: 'Application',
-    submenu: [
-      {
-        label: 'Quit',
-        accelerator: 'Command+Q',
-        click: () => {
-          app.quit();
+  const menu: Electron.MenuItemConstructorOptions[] = [
+    {
+      label: 'Undo',
+      submenu: [
+        {
+          label: 'Undo',
+          accelerator: 'CmdOrCtrl+Z',
+          role: 'undo',
         },
-      },
-    ],
-  };
+        {
+          label: 'Redo',
+          accelerator: 'Shift+CmdOrCtrl+Z',
+          role: 'redo',
+        },
+        {
+          label: 'Cut',
+          accelerator: 'CmdOrCtrl+X',
+          role: 'cut',
+        },
+        {
+          label: 'Copy',
+          accelerator: 'CmdOrCtrl+C',
+          role: 'copy',
+        },
+        {
+          label: 'Paste',
+          accelerator: 'CmdOrCtrl+V',
+          role: 'paste',
+        },
+        {
+          label: 'Select All',
+          accelerator: 'CmdOrCtrl+A',
+          role: 'selectAll',
+        },
+        {
+          label: 'Quit',
+          accelerator: 'Command+Q',
+          click: () => {
+            app.quit();
+          },
+        },
+      ]
+    },
+  ]
 
-  const edit = {
-    label: 'Edit',
-    submenu: [
-      {
-        label: 'Undo',
-        accelerator: 'CmdOrCtrl+Z',
-        role: 'undo',
-      },
-      {
-        label: 'Redo',
-        accelerator: 'Shift+CmdOrCtrl+Z',
-        role: 'redo',
-      },
-      {
-        type: 'separator',
-      },
-      {
-        label: 'Cut',
-        accelerator: 'CmdOrCtrl+X',
-        role: 'cut',
-      },
-      {
-        label: 'Copy',
-        accelerator: 'CmdOrCtrl+C',
-        role: 'copy',
-      },
-      {
-        label: 'Paste',
-        accelerator: 'CmdOrCtrl+V',
-        role: 'paste',
-      },
-      {
-        label: 'Select All',
-        accelerator: 'CmdOrCtrl+A',
-        role: 'selectAll',
-      },
-    ],
-  };
-
-  return [application, edit];
+  return Menu.buildFromTemplate(menu);
 }
 
 app.whenReady().then(createWindow)
 
 app.on('ready', () => {
-
-  const template = createMenu();
-  const appMenu = Menu.buildFromTemplate(template);
-
-  Menu.setApplicationMenu(appMenu);
-
+  Menu.setApplicationMenu(createMenu());
 });
 
 app.on('activate', () => {

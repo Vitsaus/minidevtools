@@ -12,8 +12,7 @@ export function GenerateUuidPage() {
             <Content>            
                 <div>
                     <input type="button" value={"Generate UUID"} onClick={() => {
-                        const uuid = v4();
-                        setValue(uuid);
+                        setValue(v4());
                     }} />
                 </div>
                 <div>

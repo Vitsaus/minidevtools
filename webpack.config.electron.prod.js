@@ -1,32 +1,42 @@
 const path = require('path');
 const webpack = require('webpack');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+
 
 module.exports = {
-  entry: './src/container/index.js',
+  entry: './src/container/index.ts',
   output: {
     path: path.join(__dirname, '/dist'),
     filename: 'container.js',
     publicPath: '/'
   },
   resolve: {
-    extensions: ['.js'],
+    extensions: ['.ts', '.tsx', '.js'],
   },
   target: 'electron-main',
-  node: {
-    __dirname: false,
-  },  
+  mode: 'production',
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.tsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader',
+          loader: 'ts-loader',
+          options: {
+            transpileOnly: false,
+          }
         },
       },
+      { test: /\.m?js/, type: "javascript/auto" },
     ]
   },
   plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      eslint: {
+        enabled: false,
+        files: '',
+      },
+    }),
     new webpack.DefinePlugin({
       'APP_MODE': JSON.stringify("production")
     })
