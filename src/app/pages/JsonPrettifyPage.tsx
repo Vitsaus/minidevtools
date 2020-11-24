@@ -6,8 +6,8 @@ import { ipcRenderer } from 'electron';
 import { useEditor } from '../hooks/editor';
 import { usePasteFromClipboard } from '../hooks/pasteFromClipboard';
 import { useCopyToClipboard } from '../hooks/copyToClipboard';
-import { Settings } from '../components/App';
 import { SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../constants';
+import { Settings } from 'app/hooks/indexedDb';
 
 function getPrettified(value: string, spacing: number, stripSlashes: boolean): string {
     try {
