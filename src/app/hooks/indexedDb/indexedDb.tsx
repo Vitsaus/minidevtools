@@ -1,18 +1,42 @@
 import { MutableRefObject, useEffect, useRef, useState } from 'react';
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
-import { DB_VERSION, SETTINGS_STORE_NAME, SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../constants';
+import { DB_VERSION, SETTINGS_STORE_NAME, SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../../constants';
+import { migration_1 } from './migrations';
 
 export type Setting = {
-    name: string;
     id?: string;
+    name: string;
     value: string;
 }
 
-interface Db extends DBSchema {
-    settings: {
-        value: Setting;
+export type Note = {
+    id?: string;
+    title: string;
+    content: string;
+}
+
+export type Task = {
+    id?: string;
+    done: boolean;
+    due: Date;
+    desc: string;
+}
+
+export enum IndexedDbTypes {
+    Setting,
+    Task,
+    Note,
+}
+
+export type IndexedDbValue = {
+    type: IndexedDbTypes,
+    data: Setting | Note | Task;
+}
+
+export interface Db extends DBSchema {
+    app: {
+        value: IndexedDbValue;
         key: string;
-        indexes: { 'by-name': string };
     };
 }
 
@@ -24,50 +48,35 @@ export function useIndexedDb() {
 
     const dbRef: MutableRefObject<IDBPDatabase<Db> | null> = useRef<IDBPDatabase<Db> | null>(null);
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
-    const [settings, setSettings] = useState<Settings>({});
+    const [data, setData] = useState<Settings>({});
 
     async function setupDb() {
-
-        console.log('do demo thing');
 
         let currentDbVersion = parseInt(localStorage.getItem('db') as string);
         
         if (!currentDbVersion) {
             currentDbVersion = 0;
         }
+
+        console.log('handle indexed db migrations', currentDbVersion, DB_VERSION);
         
         const db: IDBPDatabase<Db> = await openDB<Db>('App', DB_VERSION, {
           upgrade: async (_db) => {
             console.log('db init', currentDbVersion, _db.version);
 
             if (currentDbVersion < 1) {
-                console.log('db migration, 1');
-                const store = _db.createObjectStore("settings", {
-                    keyPath: 'id',
-                    autoIncrement: true,
-                });
-                const tx = store.transaction;
-                await tx.objectStore("settings").createIndex("by-name", "name");
-                await tx.objectStore("settings").add({
-                    name: SETTING_JSON_SPACING,
-                    value: '4'
-                });
-                await tx.objectStore("settings").add({
-                    name: SETTING_JSON_STRIP_SLASHES,
-                    value: 'Yes'
-                });
-                await tx.done;
+                await migration_1(_db);
             }
 
+            /*
             if (currentDbVersion < 2) {
-                console.log('db migration, 2');
-                const tx = _db.transaction("settings", "readwrite");
-                await tx.store.add({
-                    name: "xml.test",
-                    value: 'Yes'
-                });
-                await tx.done;
+                await migration_2(_db);
             }
+
+            if (currentDbVersion < 3) {
+                await migration_3(_db);
+            }
+            */
 
             localStorage.setItem('db', DB_VERSION.toString());
 
@@ -77,9 +86,12 @@ export function useIndexedDb() {
 
         dbRef.current = db;
 
-        const settingsFromDb = await db.getAll(SETTINGS_STORE_NAME);
+        const data = await db.getAll(SETTINGS_STORE_NAME);
+        const settingsFromData = data.filter((row) => {
+            return row.type === IndexedDbTypes.Setting;
+        });
         const newSettings: Settings = {};
-        settingsFromDb.forEach((setting) => {
+        settingsFromData.forEach((setting) => {
             newSettings[setting.name] = {
                 id: setting.id as string,
                 name: setting.name,
@@ -123,7 +135,7 @@ export function useIndexedDb() {
     }, []);
 
     return {
-        dbRef,
+        db: dbRef.current,
         isIndexedDbInitialized: isInitialized,
         settings,
         updateSetting,

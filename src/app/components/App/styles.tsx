@@ -62,6 +62,16 @@ export const Root = styled.div`
     flex-direction: column;
 `;
 
+export const MainTools = styled.div`
+    display: flex;
+    flex-direction: row;
+    color: #fff;
+    background-color: #000;
+    -webkit-user-select: none;
+    -webkit-app-region: drag;  
+    cursor: pointer;
+`;
+
 export const Tools = styled.div`
     display: flex;
     flex-direction: row;

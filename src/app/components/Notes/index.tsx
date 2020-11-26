@@ -25,23 +25,18 @@ const Content = styled.div`
     flex-direction: column;
 `;
 
-export type UtilityProps = {
+export type NotesProps = {
     title: ReactNode;
     children: ReactNode;
 }
 
-export function Utility(props: UtilityProps) {
+export function Notes(props: NotesProps) {
 
     return (
         <Root>
             <Tools>
-                <StyledLink to="/json-prettify">JSON prettify</StyledLink>
-                <StyledLink to="/jwt-decode">JWT Decode</StyledLink>
-                <StyledLink to="/generate-uuid">Generate UUID</StyledLink>
-                <StyledLink to="/datetime">DateTime</StyledLink>
-                <StyledLink to="/xml-prettify">XML prettify</StyledLink>
-                <StyledLink to="/base64">Base64</StyledLink>
-                <StyledLink to="/js-eval">JS Eval</StyledLink>
+                <StyledLink to="/create-note">Create note</StyledLink>
+                <StyledLink to="/notes">List notes</StyledLink>
             </Tools>
             <Header>{props.title}</Header>
             <Content>{props.children}</Content>

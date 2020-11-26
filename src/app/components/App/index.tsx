@@ -8,12 +8,16 @@ import { GenerateUuidPage } from '../../pages/GenerateUuidPage';
 import { DateTimePage } from '../../pages/DateTimePage';
 import { XmlPrettifyPage } from '../../pages/XmlPrettifyPage';
 import mousetrap from 'mousetrap';
-import { GlobalStyle, Root, StyledLink, Tools, Page } from './styles';
+import { GlobalStyle, Root, StyledLink, MainTools, Tools, Page } from './styles';
 import { Base64Page } from '../../pages/Base64Page';
 import { JSEvalPage } from '../../pages/JsEvalPage';
 import { openDB, DBSchema, IDBPDatabase } from 'idb';
 import { DB_VERSION, SETTINGS_STORE_NAME, SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../../constants';
-import { useIndexedDb } from '../../hooks/indexedDb';
+import { useIndexedDb } from '../../hooks/indexedDb/indexedDb';
+import { NotesPage } from '../../pages/NotesPage';
+import { TasksPage } from '../../pages/TasksPage';
+import { TimeTrackingPage } from '../../pages/TimeTrackingPage';
+import { CreateNotePage } from '../../pages/CreateNotePage';
 
 export function App() {
 
@@ -63,15 +67,12 @@ export function App() {
     return (
         <Root>
             <GlobalStyle />
-            <Tools>
-                <StyledLink to="/json-prettify">JSON prettify</StyledLink>
-                <StyledLink to="/jwt-decode">JWT Decode</StyledLink>
-                <StyledLink to="/generate-uuid">Generate UUID</StyledLink>
-                <StyledLink to="/datetime">DateTime</StyledLink>
-                <StyledLink to="/xml-prettify">XML prettify</StyledLink>
-                <StyledLink to="/base64">Base64</StyledLink>
-                <StyledLink to="/js-eval">JS Eval</StyledLink>
-            </Tools>
+            <MainTools>
+                <StyledLink to="/json-prettify">Tools</StyledLink>
+                <StyledLink to="/notes">Notes</StyledLink>
+                <StyledLink to="/tasks">Tasks</StyledLink>
+                <StyledLink to="/time-tracking">Time tracking</StyledLink>
+            </MainTools>
             <Page>
                 <Switch>
                     <Route path="/" exact component={MainPage} />
@@ -89,6 +90,10 @@ export function App() {
                     <Route path="/xml-prettify" exact component={XmlPrettifyPage} />
                     <Route path="/base64" exact component={Base64Page} />
                     <Route path="/js-eval" exact component={JSEvalPage} />
+                    <Route path="/notes" exact component={NotesPage} />
+                    <Route path="/create-note" exact component={CreateNotePage} />
+                    <Route path="/tasks" exact component={TasksPage} />
+                    <Route path="/time-tracking" exact component={TimeTrackingPage} />
                 </Switch>
             </Page>
         </Root>

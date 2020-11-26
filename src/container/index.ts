@@ -25,6 +25,7 @@ function createWindow () {
     movable: true,
     autoHideMenuBar: true,
     webPreferences: {
+      devTools: true,
       nodeIntegration: true,
     }
   });
@@ -56,7 +57,7 @@ function createWindow () {
   });
 
   win.loadURL(`file:///${__dirname}/index.html`).then(() => {
-    //win.openDevTools();
+    console.log('window loaded!');
   });
 
 }
@@ -96,6 +97,16 @@ function createMenu() {
           label: 'Select All',
           accelerator: 'CmdOrCtrl+A',
           role: 'selectAll',
+        },
+        {
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+R',
+          role: 'reload',
+        },
+        {
+          label: 'Reload',
+          accelerator: 'CmdOrCtrl+D',
+          role: 'toggleDevTools',
         },
         {
           label: 'Quit',

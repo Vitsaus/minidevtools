@@ -7,7 +7,7 @@ import { useEditor } from '../hooks/editor';
 import { usePasteFromClipboard } from '../hooks/pasteFromClipboard';
 import { useCopyToClipboard } from '../hooks/copyToClipboard';
 import { SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../constants';
-import { Settings } from 'app/hooks/indexedDb';
+import { Settings } from 'app/hooks/indexedDb/indexedDb';
 
 function getPrettified(value: string, spacing: number, stripSlashes: boolean): string {
     try {

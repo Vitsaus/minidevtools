@@ -40,5 +40,5 @@ module.exports = {
     new webpack.DefinePlugin({
       'APP_MODE': JSON.stringify("production")
     })
-  ]
+  ],
 };
