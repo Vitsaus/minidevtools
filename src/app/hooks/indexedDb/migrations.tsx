@@ -1,8 +1,8 @@
 import { IDBPDatabase } from "idb";
 import { SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from "../../constants";
-import { Db, IndexedDbTypes } from "./indexedDb";
+import { Db, DbTypes, IndexedDbTypes } from "./indexedDb";
 
-export async function migration_1(db: IDBPDatabase<Db>): Promise<void> {
+export async function migration_1(db: IDBPDatabase<Db<DbTypes>>): Promise<void> {
 
     console.log('db migration, 1');
     const store = db.createObjectStore("app", {

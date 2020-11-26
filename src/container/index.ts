@@ -1,5 +1,4 @@
-const { constants } = require('crypto');
-const { app, BrowserWindow, globalShortcut, ipcMain, clipboard, Menu } = require('electron');
+const { app, BrowserWindow, globalShortcut, ipcMain, clipboard, Menu, Tray, nativeImage } = require('electron');
 const path = require('path');
 const {
   xml2xsd,
@@ -17,21 +16,29 @@ function createWindow () {
 
   //app.dock.hide();
 
+  const nativeImage = require('electron').nativeImage;
+  const image = nativeImage.createFromPath(path.join(__dirname, 'resources', 'favicon.ico')); 
+  image.setTemplateImage(true);
+
   win = new BrowserWindow({
     width: 800,
     height: 660,
     frame: false,
     resizable: true,
     movable: true,
-    autoHideMenuBar: true,
+    autoHideMenuBar: false,
+    icon: image,
     webPreferences: {
       devTools: true,
       nodeIntegration: true,
     }
   });
 
-  win.setMenu(null);
-  win.setMenuBarVisibility(false);
+  win.once('focus', () => win.flashFrame(false));
+  win.flashFrame(true);
+
+  //win.setMenu(null);
+  //win.setMenuBarVisibility(false);
 
   ipcMain.handle('validateXML', async (event, xml) => {
     try {
@@ -57,7 +64,23 @@ function createWindow () {
   });
 
   win.loadURL(`file:///${__dirname}/index.html`).then(() => {
-    console.log('window loaded!');
+    console.log('window loaded');
+    win.webContents.openDevTools();
+    win.setIcon(path.join(__dirname, 'resources', 'favicon.ico'));
+    win.on("focus", () => {
+      console.log('window focused');
+    });
+    win.on('close', (e) => {
+      console.log('close window!');
+    })
+    win.on('closed', () => {
+      console.log('window closed!');
+    })
+    win.on('hide', (e) => {
+      console.log('window hide!')
+      
+      e.preventDefault();
+    })
   });
 
 }
@@ -126,7 +149,48 @@ app.whenReady().then(createWindow)
 
 app.on('ready', () => {
   Menu.setApplicationMenu(createMenu());
+
+  if (process.platform !== 'win32') {
+    return;
+  }
+
+  const tray = new Tray(path.join(__dirname, 'resources', 'favicon.ico'));
+
+  const menu = Menu.buildFromTemplate ([
+    {
+      label: 'Exit',
+      click() { app.quit() }
+    },
+    {
+      label: 'Unhide',
+      click: () => {
+        if (!win) {
+          return console.log('window not found');
+        }
+        win.show();
+      }
+    },
+    {  label: 'Help',
+    click() { null; }}
+  ])
+
+  tray.setToolTip('ElectronApplication');
+  tray.setContextMenu(menu);
+
+  if (process.platform === 'win32' ) {
+    tray.on('click', () => {
+      tray.popUpContextMenu();
+    });
+  }
+
 });
+
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') {
+    console.log('quit application, no windows are open!');
+    app.quit()
+  }
+})
 
 app.on('activate', () => {
   if (BrowserWindow.getAllWindows().length === 0) {
@@ -137,7 +201,7 @@ app.on('activate', () => {
 });
 
 app.on('browser-window-focus', (event, win) => {
-  globalShortcut.register('Command+0', () => {
+  globalShortcut.register('Ctrl+0', () => {
     if (!win) {
       createWindow();
     } else {

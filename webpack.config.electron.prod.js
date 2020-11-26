@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 
 module.exports = {
@@ -28,9 +29,18 @@ module.exports = {
         },
       },
       { test: /\.m?js/, type: "javascript/auto" },
-    ]
+      {
+        test: /\.svg$/,
+        use: ['@svgr/webpack', 'url-loader']
+      }
+    ],
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: "src/container/resources", to: "resources" },
+      ],
+    }),
     new ForkTsCheckerWebpackPlugin({
       eslint: {
         enabled: false,
@@ -39,6 +49,6 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       'APP_MODE': JSON.stringify("production")
-    })
+    }),
   ],
 };

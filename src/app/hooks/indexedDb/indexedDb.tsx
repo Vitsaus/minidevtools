@@ -28,14 +28,17 @@ export enum IndexedDbTypes {
     Note,
 }
 
-export type IndexedDbValue = {
+export type IndexedDbValue<T> = {
+    id?: string;
     type: IndexedDbTypes,
-    data: Setting | Note | Task;
+    data: T;
 }
 
-export interface Db extends DBSchema {
+export type DbTypes = Task | Setting | Note;
+
+export interface Db<T> extends DBSchema {
     app: {
-        value: IndexedDbValue;
+        value: IndexedDbValue<T>;
         key: string;
     };
 }
@@ -46,8 +49,9 @@ export type Settings = {
 
 export function useIndexedDb() {
 
-    const dbRef: MutableRefObject<IDBPDatabase<Db> | null> = useRef<IDBPDatabase<Db> | null>(null);
+    const dbRef: MutableRefObject<IDBPDatabase<Db<DbTypes>> | null> = useRef<IDBPDatabase<Db<DbTypes>> | null>(null);
     const [isInitialized, setIsInitialized] = useState<boolean>(false);
+    const [settings, setSettings] = useState<Settings>({});
     const [data, setData] = useState<Settings>({});
 
     async function setupDb() {
@@ -60,7 +64,7 @@ export function useIndexedDb() {
 
         console.log('handle indexed db migrations', currentDbVersion, DB_VERSION);
         
-        const db: IDBPDatabase<Db> = await openDB<Db>('App', DB_VERSION, {
+        const db: IDBPDatabase<Db<DbTypes>> = await openDB<Db<DbTypes>>('App', DB_VERSION, {
           upgrade: async (_db) => {
             console.log('db init', currentDbVersion, _db.version);
 
@@ -84,14 +88,20 @@ export function useIndexedDb() {
           },
         });
 
+        let cursor = await db.transaction("app").store.openCursor();
+
+        while(cursor) {
+            const value = cursor.value;
+            cursor = await cursor.continue();
+        }
+
+        
+
         dbRef.current = db;
 
-        const data = await db.getAll(SETTINGS_STORE_NAME);
-        const settingsFromData = data.filter((row) => {
-            return row.type === IndexedDbTypes.Setting;
-        });
+        const currentSettings = await getAllSettings();
         const newSettings: Settings = {};
-        settingsFromData.forEach((setting) => {
+        currentSettings.forEach((setting) => {
             newSettings[setting.name] = {
                 id: setting.id as string,
                 name: setting.name,
@@ -105,15 +115,22 @@ export function useIndexedDb() {
     
     }
 
-    async function updateSetting(key: string, name: string, value: string): Promise<void> {
-        await dbRef.current?.put(SETTINGS_STORE_NAME, {
-            name,
-            value,
-            id: key
+    async function getAllSettings(): Promise<Setting[]> {
+        const data = await dbRef.current?.getAll(SETTINGS_STORE_NAME);
+        if (!data) return [];
+        const settingsFromData: Setting[] = data.filter((row) => {
+            return row.type === IndexedDbTypes.Setting;
+        }).map((obj) => {
+            return obj.data as Setting;
         });
-        const settingsFromDb = await dbRef.current?.getAll(SETTINGS_STORE_NAME);
+        return settingsFromData;
+    }
+
+    async function updateSetting(newSetting: IndexedDbValue<Setting>): Promise<void> {
+
+        const currentSettings = await getAllSettings();
         const newSettings: Settings = {};
-        settingsFromDb?.forEach((setting) => {
+        currentSettings.forEach((setting) => {
             newSettings[setting.name] = {
                 id: setting.id as string,
                 name: setting.name,

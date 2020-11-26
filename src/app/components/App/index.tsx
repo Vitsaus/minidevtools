@@ -69,7 +69,7 @@ export function App() {
             <GlobalStyle />
             <MainTools>
                 <StyledLink to="/json-prettify">Tools</StyledLink>
-                <StyledLink to="/notes">Notes</StyledLink>
+                <StyledLink onClick={() => { alert('on click!') }} to="/notes">Notes</StyledLink>
                 <StyledLink to="/tasks">Tasks</StyledLink>
                 <StyledLink to="/time-tracking">Time tracking</StyledLink>
             </MainTools>

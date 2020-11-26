@@ -3,3 +3,4 @@ release-builds
 .DS_Store
 node_modules
 tsconfig.tsbuildinfo
+.idea

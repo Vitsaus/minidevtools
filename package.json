@@ -3,7 +3,7 @@
   "version": "0.0.2",
   "description": "small electron app with usefull little minitools",
   "productName": "@vitsaus/mini-tools",
-  "main": "dist/container.js",
+  "main": "dist\\container.js",
   "scripts": {
     "preelectron": "npm run build:electron:prod",
     "watch": "nodemon --config ./nodemon.json",
@@ -40,6 +40,7 @@
     "@types/uuid": "8.3.0",
     "babel-loader": "^8.1.0",
     "classnames": "^2.2.6",
+    "copy-webpack-plugin": "^6.3.2",
     "css-loader": "^3.5.3",
     "css-modules-typescript-loader": "^4.0.0",
     "electron": "^10.1.5",
