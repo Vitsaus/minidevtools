@@ -22,7 +22,7 @@ export const GlobalStyle = createGlobalStyle`
     textarea, input, select {
         border: 1px solid #444;
         background-color: #fff;
-        font-family: Roboto;
+        font-family: arial;
         font-size: 12px;
         padding: 6px;
         border-radius: 4px;
@@ -41,7 +41,7 @@ export const GlobalStyle = createGlobalStyle`
         margin: 0 0 12px 0;
     }
     div {
-        font-family: Roboto;
+        font-family: arial;
         font-size: 12px;
         letter-spacing: 1.5;
     }

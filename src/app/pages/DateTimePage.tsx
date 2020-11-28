@@ -9,7 +9,7 @@ const Container = styled.div`
     margin: 16px;
     border: 1px solid #444;
     background-color: #fff;
-    font-family: Roboto;
+    font-family: arial;
     font-size: 12px;
     padding: 6px;
     border-radius: 4px;

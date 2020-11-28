@@ -1,30 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
 import { Utility } from '../components/Utility';
 import { Content, Config, Option, OptionTitle, OptionValue } from '../components/Config';
-import mousetrap from 'mousetrap';
-import { ipcRenderer } from 'electron';
-import { useEditor } from '../hooks/editor';
-import { usePasteFromClipboard } from '../hooks/pasteFromClipboard';
-import { useCopyToClipboard } from '../hooks/copyToClipboard';
-import { SETTING_JSON_SPACING, SETTING_JSON_STRIP_SLASHES } from '../constants';
-import { Settings } from '../hooks/indexedDb/indexedDb';
+import { IndexedDbValue, Settings, useIndexedDb, Note } from '../hooks/indexedDb/indexedDb';
 import { Notes } from '../components/Notes';
+import { useHistory } from 'react-router-dom';
 
-type Props = {
-    settings: Settings;
-    updateSetting: (key: string, name: string, value: string) => void;
-}
-
-export function NotesPage(props: Props) {
+export function NotesPage() {
 
     const {
-        settings
-    } = props;
+        isIndexedDbInitialized,
+        getAllNotes,
+    } = useIndexedDb({
+        onReady: () => {
+            fetchNotes();
+        }
+    });
+
+    const history = useHistory();
+
+    const [notes, setNotes] = useState<IndexedDbValue<Note>[]>([]);
+
+    async function fetchNotes() {
+        const allNotes = await getAllNotes();
+        setNotes(allNotes);
+    }
 
     return (
         <Notes title="List notes">
             <Content>
-                Notes page? lol.
+                {notes.map((note, index) => {
+                    return (
+                        <div key={`note-${index}`} onClick={() => {
+                            history.push(`/note/${note.id}`);
+                        }}>
+                            <div>
+                                {note.id}: <strong>{note.data.title}</strong>
+                            </div>
+                        </div>
+                    );
+                })}
             </Content>
         </Notes>
     )
