@@ -180,6 +180,29 @@ export function useIndexedDb(props: IndexedDbProps) {
         return true;
     }
 
+    async function editBlock(id: string, index: number, updatedBlock: Block): Promise<boolean> {
+        if (!dbRef.current) return false;
+        const note = await getNote(id);
+        if (!note) return false;
+        note.data.blocks = note.data.blocks.map((originalBlock, blockIndex) => {
+            if (blockIndex === index) return updatedBlock;
+            return originalBlock;
+        });
+        await dbRef.current.put("app", note);
+        return true;
+    }
+
+    async function deleteBlock(id: string, index: number): Promise<boolean> {
+        if (!dbRef.current) return false;
+        const note = await getNote(id);
+        if (!note) return false;
+        note.data.blocks = note.data.blocks.filter((block, blockIndex) => {
+            return blockIndex !== index;
+        });
+        await dbRef.current.put("app", note);
+        return true;
+    }
+
     useEffect(() => {
         if (!isInitialized) return;
         if (props.onReady) props.onReady();
@@ -207,6 +230,8 @@ export function useIndexedDb(props: IndexedDbProps) {
         getNote,
         addNote,
         addBlock,
+        editBlock,
+        deleteBlock,
     }
     
 }

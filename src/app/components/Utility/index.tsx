@@ -42,6 +42,7 @@ export function Utility(props: UtilityProps) {
                 <StyledLink to="/xml-prettify">XML prettify</StyledLink>
                 <StyledLink to="/base64">Base64</StyledLink>
                 <StyledLink to="/js-eval">JS Eval</StyledLink>
+                <StyledLink to="/diff">Diff</StyledLink>
             </Tools>
             <Header>{props.title}</Header>
             <Content>{props.children}</Content>

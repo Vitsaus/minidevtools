@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { Utility } from '../components/Utility';
-import { Content, Config, Option, OptionTitle, OptionValue } from '../components/Config';
-import { IndexedDbValue, Settings, useIndexedDb, Note } from '../hooks/indexedDb/indexedDb';
+import { Content } from '../components/Config';
+import { IndexedDbValue, useIndexedDb, Note } from '../hooks/indexedDb/indexedDb';
 import { Notes } from '../components/Notes';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import { CreateBlock } from '../components/CreateBlock';
+import { EditBlock } from '../components/EditBlock';
 
 const Container = styled.div`
     display: flex;
@@ -40,6 +41,8 @@ export function NotePage() {
     });
 
     const [note, setNote] = useState<IndexedDbValue<Note> | null>(null);
+    const [createBlock, setCreateBlock] = useState<string | null>(null);
+    const [editBlock, setEditBlock] = useState<number | null>(null);
 
     async function fetchNote() {
         const data = await getNote(id);
@@ -65,27 +68,67 @@ export function NotePage() {
         <Notes title="View note">
             <Container>
                 <Note>
-                    <Content>
-                        <div>
+                    {createBlock && (
+                        <Content>
+                            <CreateBlock type={createBlock} note={note} />
+                        </Content>
+                    )}
+                    {editBlock !== null && (
+                        <Content>
+                            <EditBlock index={editBlock} note={note} />
+                        </Content>
+                    )}
+                    {!createBlock && !editBlock && (
+                        <Content>
                             <div>
-                                {note.id} <strong>{note.data.title}</strong>
+                                <div>
+                                    {note.id} <strong>{note.data.title}</strong>
+                                </div>
+                                <div>
+                                    {note.data.content}
+                                </div>
+                                <div>
+                                    {note.data.blocks.map((block, index) => {
+                                        return (
+                                            <div>
+                                                <div>
+                                                    {block.type}
+                                                </div>
+                                                <div>
+                                                    {block.content}
+                                                </div>
+                                                <div onClick={() => {
+                                                    setEditBlock(index);
+                                                }}>
+                                                    Edit block
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
                             </div>
-                            <div>
-                                {note.data.content}
-                            </div>
-                        </div>
-                    </Content>
+                        </Content>
+                    )}
                 </Note>
                 <SideMenu>
                     <Content>
                         <div>
+                            <div onClick={() => {
+                                setCreateBlock(null);
+                            }}>
+                                Back to note
+                            </div>
                             <div>
                                 Create
                             </div>
-                            <div>
+                            <div onClick={() => {
+                                setCreateBlock('text');
+                            }}>
                                 Text block
                             </div>
-                            <div>
+                            <div onClick={() => {
+                                setCreateBlock('code');
+                            }}>
                                 Code block
                             </div>
                         </div>

@@ -25,6 +25,14 @@ export function NotesPage() {
         setNotes(allNotes);
     }
 
+    if (!isIndexedDbInitialized) {
+        return (
+            <div>
+                Initializing...
+            </div>
+        )
+    }
+
     return (
         <Notes title="List notes">
             <Content>

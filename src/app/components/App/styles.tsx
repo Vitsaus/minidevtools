@@ -19,32 +19,7 @@ export const GlobalStyle = createGlobalStyle`
     input:focus, textarea:focus, select:focus{
         outline: none;
     } 
-    textarea, input, select {
-        border: 1px solid #444;
-        background-color: #fff;
-        font-family: arial;
-        font-size: 12px;
-        padding: 6px;
-        border-radius: 4px;
-        width: 100%;
-        text-align: left;
-    }
-    input {
-        height: 28px;
-        margin: 0 0 12px 0;
-    }
-    input[type=button], input[type=submit] {
-        cursor: pointer;
-    }
-    textarea {
-        height: 240px;
-        margin: 0 0 12px 0;
-    }
-    div {
-        font-family: arial;
-        font-size: 12px;
-        letter-spacing: 1.5;
-    }
+
 `;
 
 export const StyledLink = styled(Link)`

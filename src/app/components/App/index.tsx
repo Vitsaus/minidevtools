@@ -18,6 +18,7 @@ import { TasksPage } from '../../pages/TasksPage';
 import { TimeTrackingPage } from '../../pages/TimeTrackingPage';
 import { CreateNotePage } from '../../pages/CreateNotePage';
 import { NotePage } from '../../pages/NotePage';
+import { DiffPage } from '../../pages/DiffPage';
 
 export function App() {
 
@@ -74,6 +75,7 @@ export function App() {
                     <Route path="/create-note" exact component={CreateNotePage} />
                     <Route path="/tasks" exact component={TasksPage} />
                     <Route path="/time-tracking" exact component={TimeTrackingPage} />
+                    <Route path="/diff" exact component={DiffPage} />
                 </Switch>
             </Page>
         </Root>
