@@ -74,7 +74,7 @@ module.exports = {
     }),
     new MonacoWebpackPlugin({
       // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-      languages: ['json', 'javascript', 'java', 'php', 'shell', 'xml', 'typescript', 'yaml', 'css', 'scss', 'hcl', 'markdown', 'sql', 'html'],
+      languages: ['json', 'javascript', 'java', 'php', 'shell', 'xml', 'typescript', 'yaml', 'css', 'scss', 'hcl', 'markdown', 'sql', 'html', 'plaintext'],
     })
   ]
 };

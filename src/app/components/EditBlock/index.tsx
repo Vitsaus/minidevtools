@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { IndexedDbValue, Note, useIndexedDb } from '../../hooks/indexedDb/indexedDb';
+import { TextEditor } from '../TextEditor';
 
 export type EditBlockProps = {
     index: number;
@@ -20,7 +21,7 @@ export function EditBlock(props: EditBlockProps) {
 
     const history = useHistory();
     const block = props.note.data.blocks[props.index];
-    const [value, setValue] = useState<string>(block.content);
+    const [content, setContent] = useState<string>(block.content);
 
     if (!block) {
         return (
@@ -36,14 +37,18 @@ export function EditBlock(props: EditBlockProps) {
                 Edit {block.type} block for note: {props.note.id}
             </div>
             <div>
-                <textarea value={value} onChange={(e) => {
-                    setValue(e.target.value);
-                }} />
+                <TextEditor
+                    value={content}
+                    language="plaintext"
+                    onChange={(value) => {
+                        setContent(value);
+                    }}
+                />
             </div>
             <div onClick={async () => {
                 const result = await editBlock(props.note.id as string, props.index, {
                     ...block,
-                    content: value,
+                    content,
                 });
                 console.log('got block edit result', result);
             }}>

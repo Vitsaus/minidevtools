@@ -3,8 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { IndexedDbValue, Note, useIndexedDb } from '../../hooks/indexedDb/indexedDb';
 import MonacoEditor from 'react-monaco-editor';
 import styled from 'styled-components';
+import { TextEditor } from '../TextEditor';
 
-const Editor = styled.div`
+const EditorContainer = styled.div`
     width: 500px;
     height: 250px;
     border: px solid orange;
@@ -38,22 +39,15 @@ export function CreateBlock(props: CreateBlockProps) {
                 <div>
                     Editor:
                 </div>
-                <Editor>
-                    <MonacoEditor
-                        width="500"
-                        height="250"
-                        language="javascript"
-                        value={blockContent}
-                        options={{
-                            minimap: {
-                                enabled: false,
-                            }
-                        }}
+                <EditorContainer>
+                    <TextEditor
+                        language=""
                         onChange={(value) => {
                             setBlockContent(value);
                         }}
+                        value={blockContent}
                     />
-                </Editor>               
+                </EditorContainer>               
             </div>
             <div onClick={async () => {
                 const result = await addBlock(props.note.id as string, {
